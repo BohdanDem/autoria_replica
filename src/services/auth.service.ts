@@ -9,10 +9,20 @@ import { passwordService } from "./password.service";
 import { tokenService } from "./token.service";
 
 class AuthService {
-  public async register(dto: IUser): Promise<IUser> {
+  public async register(dto: IUser, userRole: string): Promise<IUser> {
     try {
       await this.isEmailUniq(dto.email);
       const hashedPassword = await passwordService.hash(dto.password);
+
+      const role = userRole.split("/").pop();
+
+      if (role === "seller_base") {
+        dto.role = "seller";
+        dto.accountType = "base";
+      } else if (role === "seller_premium") {
+        dto.role = "seller";
+        dto.accountType = "premium";
+      } else dto.role = role;
 
       const user = await userRepository.register({
         ...dto,
@@ -28,6 +38,7 @@ class AuthService {
     try {
       const user = await userRepository.getOneByParams({ email: dto.email }, [
         "password",
+        "role",
       ]);
       if (!user) {
         throw new ApiError("Invalid credentials provided", 401);
@@ -44,8 +55,13 @@ class AuthService {
       const tokensPair = await tokenService.generateTokenPair({
         userId: user._id.toString(),
         name: user.userName,
+        role: user.role,
       });
-      await tokenRepository.create({ ...tokensPair, _userId: user._id });
+
+      await tokenRepository.create({
+        ...tokensPair,
+        _userId: user._id,
+      });
 
       return tokensPair;
     } catch (e) {
@@ -60,6 +76,7 @@ class AuthService {
     try {
       const tokensPair = tokenService.generateTokenPair({
         userId: payload.userId,
+        role: payload.role,
         name: payload.name,
       });
 

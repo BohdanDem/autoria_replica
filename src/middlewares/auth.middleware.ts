@@ -60,6 +60,23 @@ class AuthMiddleware {
       next(e);
     }
   }
+
+  public async checkAdminPermission(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const payload = req.res.locals.tokenPayload;
+
+      if (payload.role !== "admin") {
+        throw new ApiError("You can't create manager account!", 403);
+      }
+      next();
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export const authMiddleware = new AuthMiddleware();

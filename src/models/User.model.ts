@@ -11,6 +11,9 @@ const userSchema = new Schema(
     role: {
       type: String,
     },
+    accountType: {
+      type: String,
+    },
     age: {
       type: Number,
       min: [18, "Minimum age is 18"],

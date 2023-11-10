@@ -9,6 +9,8 @@ export interface IUser extends Document {
   email: string;
   password: string;
   avatar: string;
+  role: string;
+  accountType: string;
 }
 
 export type IUserCredentials = Pick<IUser, "email" | "password">;

@@ -16,6 +16,36 @@ router.post(
 );
 
 router.post(
+  "/register/manager",
+  authMiddleware.checkAccessToken,
+  authMiddleware.checkAdminPermission,
+  commonMiddleware.isBodyValid(UserValidator.register),
+  userMiddleware.isEmailUniq,
+  authController.register,
+);
+
+router.post(
+  "/register/seller_base",
+  commonMiddleware.isBodyValid(UserValidator.register),
+  userMiddleware.isEmailUniq,
+  authController.register,
+);
+
+router.post(
+  "/register/seller_premium",
+  commonMiddleware.isBodyValid(UserValidator.register),
+  userMiddleware.isEmailUniq,
+  authController.register,
+);
+
+router.post(
+  "/register/buyer",
+  commonMiddleware.isBodyValid(UserValidator.register),
+  userMiddleware.isEmailUniq,
+  authController.register,
+);
+
+router.post(
   "/login",
   commonMiddleware.isBodyValid(UserValidator.login),
   authController.login,
