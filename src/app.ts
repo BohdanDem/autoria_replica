@@ -1,15 +1,27 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import * as mongoose from "mongoose";
 
 import { configs } from "./configs/config";
+import { ApiError } from "./errors/api.error";
+import { authRouter } from "./routers/auth.router";
 
 const app = express();
 
-const PORT = 5000;
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req: Request, res: Response) => {
-  res.json("hello");
+//app.use("/users", userRouter);
+app.use("/auth", authRouter);
+
+app.use((error: ApiError, req: Request, res: Response, next: NextFunction) => {
+  const status = error.status || 500;
+  res.status(status).json({
+    message: error.message,
+    status: error.status,
+  });
 });
+
+const PORT = 5000;
 
 app.listen(PORT, async () => {
   await mongoose.connect(configs.DB_URI);
