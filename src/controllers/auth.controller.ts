@@ -10,9 +10,9 @@ class AuthController {
     next: NextFunction,
   ): Promise<Response<void>> {
     try {
-      const actionToken = await authService.register(req.body);
+      const user = await authService.register(req.body);
 
-      return res.status(201).json(actionToken);
+      return res.status(201).json(user);
     } catch (e) {
       next(e);
     }

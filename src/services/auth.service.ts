@@ -9,7 +9,7 @@ import { passwordService } from "./password.service";
 import { tokenService } from "./token.service";
 
 class AuthService {
-  public async register(dto: IUser): Promise<string> {
+  public async register(dto: IUser): Promise<IUser> {
     try {
       await this.isEmailUniq(dto.email);
       const hashedPassword = await passwordService.hash(dto.password);
@@ -43,7 +43,7 @@ class AuthService {
 
       const tokensPair = await tokenService.generateTokenPair({
         userId: user._id.toString(),
-        name: user.name,
+        name: user.userName,
       });
       await tokenRepository.create({ ...tokensPair, _userId: user._id });
 
