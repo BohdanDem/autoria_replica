@@ -12,6 +12,7 @@ class UserRepository {
     );
 
     const { page, limit, sortedBy, ...searchObject } = queryObj;
+    console.log(queryObj);
 
     const skip = +limit * (+page - 1);
 
