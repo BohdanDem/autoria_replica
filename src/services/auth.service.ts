@@ -19,6 +19,7 @@ class AuthService {
       if (role === "seller_base") {
         dto.role = "seller";
         dto.accountType = "base";
+        dto.postedCarCount = 0;
       } else if (role === "seller_premium") {
         dto.role = "seller";
         dto.accountType = "premium";

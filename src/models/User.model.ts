@@ -35,6 +35,9 @@ const userSchema = new Schema(
       select: false,
       required: true,
     },
+    postedCarCount: {
+      type: Number,
+    },
     avatar: {
       type: String,
     },

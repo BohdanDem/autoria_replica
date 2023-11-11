@@ -1,5 +1,6 @@
 import { ApiError } from "../errors/api.error";
 import { carRepository } from "../repositories/car.repository";
+import { userRepository } from "../repositories/user.repository";
 import { ICar } from "../types/car.type";
 import { IPaginationResponse, IQuery } from "../types/pagination.type";
 
@@ -21,6 +22,17 @@ class CarService {
   }
 
   public async post(dto: ICar, userId: string): Promise<ICar> {
+    const user = await userRepository.findById(userId);
+    if (user.role === "seller" && user.accountType === "base") {
+      if (user.postedCarCount >= 1) {
+        throw new ApiError(
+          "You can place only one advertisement! To post more please buy premium account",
+          403,
+        );
+      }
+      user.postedCarCount += 1;
+      await userRepository.put(userId, user);
+    }
     return await carRepository.post(dto, userId);
   }
 

@@ -11,6 +11,7 @@ export interface IUser extends Document {
   avatar: string;
   role: string;
   accountType: string;
+  postedCarCount: number;
 }
 
 export type IUserCredentials = Pick<IUser, "email" | "password">;
