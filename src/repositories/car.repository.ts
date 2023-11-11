@@ -29,19 +29,19 @@ class CarRepository {
     return await Car.findById(id);
   }
 
-  public async getOneByParams(params: FilterQuery<ICar>): Promise<ICar> {
-    return await Car.findOne(params);
-  }
-
   public async delete(id: string): Promise<any> {
     const { deletedCount } = await Car.deleteOne({ _id: id });
     return deletedCount;
   }
 
+  public async getOneByParams(params: FilterQuery<ICar>): Promise<ICar> {
+    return await Car.findOne(params);
+  }
+
   public async put(id: string, dto: Partial<ICar>): Promise<ICar> {
     return await Car.findByIdAndUpdate(id, dto, {
       returnDocument: "after",
-    }).populate("_userId");
+    });
   }
 }
 

@@ -53,9 +53,8 @@ class CarController {
     next: NextFunction,
   ): Promise<any> {
     try {
-      const { userId } = req.res.locals.tokenPayload as ITokenPayload;
       const { id } = req.params;
-      await carService.delete(id, userId);
+      await carService.delete(id);
 
       res.sendStatus(204);
     } catch (e) {
@@ -65,10 +64,9 @@ class CarController {
 
   public async put(req: Request, res: Response, next: NextFunction) {
     try {
-      const { userId } = req.res.locals.tokenPayload as ITokenPayload;
       const { id } = req.params;
 
-      const car = await carService.put(id, req.body, userId);
+      const car = await carService.put(id, req.body);
 
       res.status(201).json(car);
     } catch (e) {

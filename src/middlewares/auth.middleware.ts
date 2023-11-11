@@ -81,7 +81,7 @@ class AuthMiddleware {
     };
   }
 
-  public checkPermissionToManageByRoleAndId(
+  public checkPermissionToManageByRoleOrId(
     id: string,
     ...allowedRoles: string[]
   ) {

@@ -32,7 +32,7 @@ router.get(
 router.delete(
   "/:id",
   authMiddleware.checkAccessToken,
-  authMiddleware.checkPermissionToManageByRoleAndId(
+  authMiddleware.checkPermissionToManageByRoleOrId(
     "id",
     roles.ADMIN,
     roles.MANAGER,
@@ -44,7 +44,7 @@ router.delete(
 router.put(
   "/:id",
   authMiddleware.checkAccessToken,
-  authMiddleware.checkPermissionToManageByRoleAndId(
+  authMiddleware.checkPermissionToManageByRoleOrId(
     "id",
     roles.ADMIN,
     roles.MANAGER,

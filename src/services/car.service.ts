@@ -28,38 +28,17 @@ class CarService {
     return await carRepository.findById(carId);
   }
 
-  public async delete(id: string, userId: string): Promise<any> {
-    await this.checkAbilityToManage(userId, id);
+  public async delete(id: string): Promise<any> {
     const deletedCount = await carRepository.delete(id);
 
     if (!deletedCount) {
       throw new ApiError("Car not found", 404);
     }
-
     return deletedCount;
   }
 
-  public async put(
-    id: string,
-    dto: Partial<ICar>,
-    userId: string,
-  ): Promise<ICar> {
-    await this.checkAbilityToManage(userId, id);
+  public async put(id: string, dto: Partial<ICar>): Promise<ICar> {
     return await carRepository.put(id, dto);
-  }
-
-  private async checkAbilityToManage(
-    userId: string,
-    manageCarId: string,
-  ): Promise<ICar> {
-    const car = await carRepository.getOneByParams({
-      _userId: userId,
-      _id: manageCarId,
-    });
-    if (!car) {
-      throw new ApiError("U can not manage this car", 403);
-    }
-    return car;
   }
 }
 

@@ -40,6 +40,11 @@ router.get(
 router.delete(
   "/:id",
   authMiddleware.checkAccessToken,
+  carMiddleware.checkPermissionToManageCarByRoleOrId(
+    "id",
+    roles.ADMIN,
+    roles.MANAGER,
+  ),
   commonMiddleware.isIdValid("id"),
   carController.delete,
 );
@@ -47,6 +52,11 @@ router.delete(
 router.put(
   "/:id",
   authMiddleware.checkAccessToken,
+  carMiddleware.checkPermissionToManageCarByRoleOrId(
+    "id",
+    roles.ADMIN,
+    roles.MANAGER,
+  ),
   commonMiddleware.isIdValid("id"),
   commonMiddleware.isBodyValid(CarValidator.update),
   carController.put,
