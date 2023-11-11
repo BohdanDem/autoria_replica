@@ -5,36 +5,24 @@ import { IQuery } from "../types/pagination.type";
 import { IUser, IUserCredentials } from "../types/user.type";
 
 class UserRepository {
-  public async getMany(query: IQuery): Promise<[IUser[], number]> {
+  public async getAll(query: IQuery): Promise<[IUser[], number]> {
     const queryStr = JSON.stringify(query);
     const queryObj = JSON.parse(
       queryStr.replace(/\b(gte|lte|gt|lt)\b/, (match) => `$${match}`),
     );
 
     const { page, limit, sortedBy, ...searchObject } = queryObj;
-    console.log(queryObj);
 
     const skip = +limit * (+page - 1);
 
     return await Promise.all([
       User.find(searchObject).limit(+limit).skip(skip).sort(sortedBy),
-      User.count(searchObject),
+      User.find().count(searchObject),
     ]);
   }
 
   public async findById(id: string): Promise<IUser> {
     return await User.findById(id);
-  }
-
-  public async getOneByParams(
-    params: FilterQuery<IUser>,
-    selection?: string[],
-  ): Promise<IUser> {
-    return await User.findOne(params, selection);
-  }
-
-  public async register(dto: IUserCredentials): Promise<IUser> {
-    return await User.create(dto);
   }
 
   public async delete(id: string): Promise<any> {
@@ -48,17 +36,15 @@ class UserRepository {
     });
   }
 
-  public async updateOneById(
-    userId: string,
-    dto: Partial<IUser>,
+  public async getOneByParams(
+    params: FilterQuery<IUser>,
+    selection?: string[],
   ): Promise<IUser> {
-    return await User.findByIdAndUpdate(userId, dto, {
-      returnDocument: "after",
-    });
+    return await User.findOne(params, selection);
   }
 
-  public async setStatus(userId: string, status: any): Promise<void> {
-    await User.updateOne({ _id: userId }, { $set: { status } });
+  public async register(dto: IUserCredentials): Promise<IUser> {
+    return await User.create(dto);
   }
 }
 

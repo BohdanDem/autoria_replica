@@ -9,6 +9,7 @@ export interface IQuery {
 export interface IPaginationResponse<T> {
   page: number;
   limit: number;
+  itemsCount: number;
   itemsFound: number;
   data: T[];
 }

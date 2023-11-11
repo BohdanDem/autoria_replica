@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import { roles } from "../configs/role";
 import { userController } from "../controllers/user.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
@@ -11,13 +12,18 @@ const router = Router();
 
 router.get(
   "/",
+  authMiddleware.checkAccessToken,
+  authMiddleware.checkPermissionToManageByRole(roles.ADMIN, roles.MANAGER),
   commonMiddleware.isQueryValid(QueryValidator.query),
   userController.getAll,
 );
 
+router.get("/me", authMiddleware.checkAccessToken, userController.getMe);
+
 router.get(
   "/:id",
   authMiddleware.checkAccessToken,
+  authMiddleware.checkPermissionToManageByRole(roles.ADMIN, roles.MANAGER),
   commonMiddleware.isIdValid("id"),
   userMiddleware.getByIdOrThrow,
   userController.getById,
@@ -26,6 +32,11 @@ router.get(
 router.delete(
   "/:id",
   authMiddleware.checkAccessToken,
+  authMiddleware.checkPermissionToManageByRoleAndId(
+    "id",
+    roles.ADMIN,
+    roles.MANAGER,
+  ),
   commonMiddleware.isIdValid("id"),
   userController.delete,
 );
@@ -33,6 +44,11 @@ router.delete(
 router.put(
   "/:id",
   authMiddleware.checkAccessToken,
+  authMiddleware.checkPermissionToManageByRoleAndId(
+    "id",
+    roles.ADMIN,
+    roles.MANAGER,
+  ),
   commonMiddleware.isIdValid("id"),
   commonMiddleware.isBodyValid(UserValidator.update),
   userController.put,

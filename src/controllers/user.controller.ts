@@ -12,7 +12,7 @@ class UserController {
     next: NextFunction,
   ): Promise<Response<IUser[]>> {
     try {
-      const users = await userService.getAllWithPagination(req.query as IQuery);
+      const users = await userService.getAll(req.query as unknown as IQuery);
 
       return res.json(users);
     } catch (e) {
@@ -20,9 +20,21 @@ class UserController {
     }
   }
 
+  public async getMe(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { userId } = req.res.locals.tokenPayload as ITokenPayload;
+      const user = await userService.getUser(userId);
+
+      res.json(user);
+    } catch (e) {
+      next(e);
+    }
+  }
+
   public async getById(req: Request, res: Response, next: NextFunction) {
     try {
-      const user = req.res.locals;
+      const { id } = req.params;
+      const user = await userService.getUser(id);
 
       res.json(user);
     } catch (e) {
@@ -48,9 +60,8 @@ class UserController {
   public async put(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { userId } = req.res.locals.tokenPayload as ITokenPayload;
 
-      const user = await userService.put(id, req.body, userId);
+      const user = await userService.put(id, req.body);
 
       res.status(201).json(user);
     } catch (e) {

@@ -61,6 +61,52 @@ class AuthMiddleware {
     }
   }
 
+  public checkPermissionToManageByRole(...allowedRoles: string[]) {
+    return (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const payload = req.res.locals.tokenPayload;
+        const allowedArray = [...allowedRoles];
+        const permission = allowedArray
+          .map((item) => item === payload.role)
+          .find((item) => item === true);
+
+        if (!permission) {
+          throw new ApiError("Access denied!", 403);
+        }
+
+        next();
+      } catch (e) {
+        next(e);
+      }
+    };
+  }
+
+  public checkPermissionToManageByRoleAndId(
+    id: string,
+    ...allowedRoles: string[]
+  ) {
+    return (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const Id = req.params[id];
+        const payload = req.res.locals.tokenPayload;
+
+        const allowedArray = [...allowedRoles];
+        const rolePermission = allowedArray
+          .map((item) => item === payload.role)
+          .find((item) => item === true);
+        const idPermission = Id === payload.userId;
+
+        if (!(rolePermission || idPermission)) {
+          throw new ApiError("Access denied!", 403);
+        }
+
+        next();
+      } catch (e) {
+        next(e);
+      }
+    };
+  }
+
   public async checkAdminPermission(
     req: Request,
     res: Response,

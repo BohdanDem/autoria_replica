@@ -4,21 +4,24 @@ import { IPaginationResponse, IQuery } from "../types/pagination.type";
 import { IUser } from "../types/user.type";
 
 class UserService {
-  public async getAllWithPagination(
-    query: IQuery,
-  ): Promise<IPaginationResponse<IUser>> {
+  public async getAll(query: IQuery): Promise<IPaginationResponse<IUser>> {
     try {
-      const [users, itemsFound] = await userRepository.getMany(query);
+      const [users, itemsCount] = await userRepository.getAll(query);
 
       return {
         page: +query.page,
         limit: +query.limit,
-        itemsFound,
+        itemsCount,
+        itemsFound: users.length,
         data: users,
       };
     } catch (e) {
       throw new ApiError(e.message, e.status);
     }
+  }
+
+  public async getUser(userId: string): Promise<IUser> {
+    return await userRepository.findById(userId);
   }
 
   public async delete(id: string): Promise<any> {
@@ -31,23 +34,8 @@ class UserService {
     return deletedCount;
   }
 
-  public async put(
-    id: string,
-    dto: Partial<IUser>,
-    userId: string,
-  ): Promise<IUser> {
-    this.checkAbilityToManage(userId, id);
+  public async put(id: string, dto: Partial<IUser>): Promise<IUser> {
     return await userRepository.put(id, dto);
-  }
-
-  public async getMe(userId: string): Promise<IUser> {
-    return await userRepository.findById(userId);
-  }
-
-  private checkAbilityToManage(userId: string, id: string): void {
-    if (userId !== id) {
-      throw new ApiError("You can not manage this user", 403);
-    }
   }
 }
 
