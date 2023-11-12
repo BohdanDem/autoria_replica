@@ -12,6 +12,7 @@ class CarPresenter implements IPresenter<ICar, Partial<ICar>> {
       currency: data.currency,
       region: data.region,
       isActive: data.isActive,
+      carFullCost: data.carFullCost,
       description: data.description,
       _userId: data._userId,
       avatar: `${configs.AWS_S3_URL}/${data.avatar}`,

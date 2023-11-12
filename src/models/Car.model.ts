@@ -33,6 +33,9 @@ const carSchema = new Schema(
     badWordsCheckCount: {
       type: Number,
     },
+    carFullCost: {
+      type: Object,
+    },
     description: {
       type: String,
     },

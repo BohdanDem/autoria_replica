@@ -1,10 +1,13 @@
 import { UploadedFile } from "express-fileupload";
 
 import { EFileTypes } from "../enums/avatar.file.type.enum";
+import { ECurrency } from "../enums/currency.enum";
 import { ApiError } from "../errors/api.error";
+import { Currency } from "../models/Currency.model";
 import { carRepository } from "../repositories/car.repository";
 import { userRepository } from "../repositories/user.repository";
 import { ICar } from "../types/car.type";
+import { ICarFullCost, ICurrency, IPrice } from "../types/currency.type";
 import { IPaginationResponse, IQuery } from "../types/pagination.type";
 import { s3Service } from "./s3.service";
 
@@ -37,6 +40,8 @@ class CarService {
       user.postedCarCount += 1;
       await userRepository.put(userId, user);
     }
+    const carFullCost: ICarFullCost = await this.getFullCarCost(dto);
+    dto.carFullCost = carFullCost;
     return await carRepository.post(dto, userId);
   }
 
@@ -71,6 +76,42 @@ class CarService {
     });
 
     return updatedCar;
+  }
+
+  private async getFullCarCost(dto: ICar): Promise<ICarFullCost> {
+    const currency: ICurrency = await Currency.findOne();
+    const cost: Partial<IPrice> = {};
+
+    switch (dto.currency) {
+      case ECurrency.USD:
+        cost.UAH_Price = (dto.price * +currency.USD_UAH_sale).toFixed(2);
+        cost.EUR_Price = (
+          dto.price *
+          (+currency.USD_UAH_sale / +currency.EUR_UAH_sale)
+        ).toFixed(2);
+        break;
+      case ECurrency.EUR:
+        cost.UAH_Price = (dto.price * +currency.EUR_UAH_sale).toFixed(2);
+        cost.USD_Price = (
+          dto.price *
+          (+currency.EUR_UAH_sale / +currency.USD_UAH_sale)
+        ).toFixed(2);
+        break;
+      case ECurrency.UAH:
+        cost.EUR_Price = (dto.price / +currency.EUR_UAH_sale).toFixed(2);
+        cost.USD_Price = (dto.price / +currency.USD_UAH_sale).toFixed(2);
+        break;
+    }
+    const carFullCost = {
+      exchangeCurrency: {
+        EUR_UAH_buy: currency.EUR_UAH_buy,
+        EUR_UAH_sale: currency.EUR_UAH_sale,
+        USD_UAH_buy: currency.USD_UAH_buy,
+        USD_UAH_sale: currency.USD_UAH_sale,
+      },
+      cost,
+    };
+    return carFullCost;
   }
 }
 

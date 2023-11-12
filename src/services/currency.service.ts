@@ -11,7 +11,7 @@ class CurrencyService {
       const EUR_UAH_buy = currency.data[0].buy;
       const EUR_UAH_sale = currency.data[0].sale;
       const USD_UAH_buy = currency.data[1].buy;
-      const USD_UAH_sale = currency.data[0].sale;
+      const USD_UAH_sale = currency.data[1].sale;
 
       const currencyOld = await Currency.findOne({ EUR_UAH_buy });
       if (currencyOld) {
