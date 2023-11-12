@@ -51,7 +51,7 @@ class CarController {
     req: Request,
     res: Response,
     next: NextFunction,
-  ): Promise<any> {
+  ): Promise<void> {
     try {
       const { id } = req.params;
       await carService.delete(id);

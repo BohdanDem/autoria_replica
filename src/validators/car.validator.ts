@@ -6,7 +6,7 @@ import { ECurrency } from "../enums/currency.enum";
 export class CarValidator {
   static brand = joi.valid(...Object.values(EBrand));
   static carModel = joi.string().min(2).max(30).trim();
-  static year = joi.number().min(1990).max(2023);
+  static year = joi.number().min(1990).max(new Date().getFullYear());
   static price = joi.number().min(0);
   static currency = joi.valid(...Object.values(ECurrency));
   static region = joi.string().min(2).max(50).trim();

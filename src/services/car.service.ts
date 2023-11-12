@@ -40,7 +40,7 @@ class CarService {
     return await carRepository.findById(carId);
   }
 
-  public async delete(id: string): Promise<any> {
+  public async delete(id: string): Promise<number> {
     const deletedCount = await carRepository.delete(id);
 
     if (!deletedCount) {
