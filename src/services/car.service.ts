@@ -1,8 +1,12 @@
+import { UploadedFile } from "express-fileupload";
+
+import { EFileTypes } from "../enums/avatar.file.type.enum";
 import { ApiError } from "../errors/api.error";
 import { carRepository } from "../repositories/car.repository";
 import { userRepository } from "../repositories/user.repository";
 import { ICar } from "../types/car.type";
 import { IPaginationResponse, IQuery } from "../types/pagination.type";
+import { s3Service } from "./s3.service";
 
 class CarService {
   public async getAll(query: IQuery): Promise<IPaginationResponse<ICar>> {
@@ -51,6 +55,22 @@ class CarService {
 
   public async put(id: string, dto: Partial<ICar>): Promise<ICar> {
     return await carRepository.put(id, dto);
+  }
+
+  public async uploadAvatar(avatar: UploadedFile, id: string): Promise<ICar> {
+    const car = await carRepository.findById(id);
+
+    if (car.avatar) {
+      await s3Service.deleteFile(car.avatar);
+    }
+
+    const filePath = await s3Service.uploadFile(avatar, EFileTypes.Car, id);
+
+    const updatedCar = await carRepository.updateOneById(id, {
+      avatar: filePath,
+    });
+
+    return updatedCar;
   }
 }
 

@@ -28,12 +28,15 @@ const carSchema = new Schema(
       type: String,
     },
     isActive: {
-      type: String,
+      type: Boolean,
     },
     badWordsCheckCount: {
       type: Number,
     },
     description: {
+      type: String,
+    },
+    avatar: {
       type: String,
     },
     _userId: {

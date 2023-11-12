@@ -43,6 +43,12 @@ class CarRepository {
       returnDocument: "after",
     });
   }
+
+  public async updateOneById(carId: string, dto: Partial<ICar>): Promise<ICar> {
+    return await Car.findByIdAndUpdate(carId, dto, {
+      returnDocument: "after",
+    });
+  }
 }
 
 export const carRepository = new CarRepository();

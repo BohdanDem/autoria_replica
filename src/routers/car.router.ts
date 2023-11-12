@@ -5,6 +5,7 @@ import { carController } from "../controllers/car.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { carMiddleware } from "../middlewares/car.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
+import { fileMiddleware } from "../middlewares/files.middleware";
 import { CarValidator } from "../validators/car.validator";
 import { QueryValidator } from "../validators/query.validator";
 
@@ -60,6 +61,13 @@ router.put(
   commonMiddleware.isIdValid("id"),
   commonMiddleware.isBodyValid(CarValidator.update),
   carController.put,
+);
+
+router.post(
+  "/:id/avatar",
+  authMiddleware.checkAccessToken,
+  fileMiddleware.isAvatarValid,
+  carController.uploadAvatar,
 );
 
 export const carRouter = router;

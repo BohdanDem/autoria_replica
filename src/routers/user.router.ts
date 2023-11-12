@@ -4,6 +4,7 @@ import { roles } from "../configs/role";
 import { userController } from "../controllers/user.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
+import { fileMiddleware } from "../middlewares/files.middleware";
 import { userMiddleware } from "../middlewares/user.middleware";
 import { QueryValidator } from "../validators/query.validator";
 import { UserValidator } from "../validators/user.validator";
@@ -52,6 +53,13 @@ router.put(
   commonMiddleware.isIdValid("id"),
   commonMiddleware.isBodyValid(UserValidator.update),
   userController.put,
+);
+
+router.post(
+  "/:id/avatar",
+  authMiddleware.checkAccessToken,
+  fileMiddleware.isAvatarValid,
+  userController.uploadAvatar,
 );
 
 export const userRouter = router;
