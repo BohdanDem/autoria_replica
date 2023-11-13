@@ -92,25 +92,37 @@ class CarService {
 
     switch (dto.currency) {
       case ECurrency.USD:
-        cost.UAH_Price = (dto.price * +currency.USD_UAH_sale).toFixed(2);
-        cost.USD_Price = dto.price.toFixed(2);
-        cost.EUR_Price = (
-          dto.price *
-          (+currency.USD_UAH_sale / +currency.EUR_UAH_sale)
-        ).toFixed(2);
+        cost.UAH_Price = Number(
+          (dto.price * +currency.USD_UAH_sale).toFixed(2),
+        );
+        cost.USD_Price = Number(dto.price.toFixed(2));
+        cost.EUR_Price = Number(
+          (
+            dto.price *
+            (+currency.USD_UAH_sale / +currency.EUR_UAH_sale)
+          ).toFixed(2),
+        );
         break;
       case ECurrency.EUR:
-        cost.UAH_Price = (dto.price * +currency.EUR_UAH_sale).toFixed(2);
-        cost.USD_Price = (
-          dto.price *
-          (+currency.EUR_UAH_sale / +currency.USD_UAH_sale)
-        ).toFixed(2);
-        cost.EUR_Price = dto.price.toFixed(2);
+        cost.UAH_Price = Number(
+          (dto.price * +currency.EUR_UAH_sale).toFixed(2),
+        );
+        cost.USD_Price = Number(
+          (
+            dto.price *
+            (+currency.EUR_UAH_sale / +currency.USD_UAH_sale)
+          ).toFixed(2),
+        );
+        cost.EUR_Price = Number(dto.price.toFixed(2));
         break;
       case ECurrency.UAH:
-        cost.UAH_Price = dto.price.toFixed(2);
-        cost.EUR_Price = (dto.price / +currency.EUR_UAH_sale).toFixed(2);
-        cost.USD_Price = (dto.price / +currency.USD_UAH_sale).toFixed(2);
+        cost.UAH_Price = Number(dto.price.toFixed(2));
+        cost.EUR_Price = Number(
+          (dto.price / +currency.EUR_UAH_sale).toFixed(2),
+        );
+        cost.USD_Price = Number(
+          (dto.price / +currency.USD_UAH_sale).toFixed(2),
+        );
         break;
     }
     const carFullCost = {

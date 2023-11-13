@@ -2,7 +2,7 @@ import { carInfoRepository } from "../repositories/car.info.repository";
 import { carWatchRepository } from "../repositories/car.watch.repository";
 
 class CarInfoService {
-  public async getWatchCount(id: string): Promise<number> {
+  public async getWatchCount(id: string): Promise<any> {
     return await carWatchRepository.getCarWatch(id);
   }
 
@@ -10,8 +10,8 @@ class CarInfoService {
     return await carInfoRepository.getMiddleCarPriceByRegion(dto);
   }
 
-  public async getMiddleCarPriceByCountry(): Promise<number> {
-    return await carInfoRepository.getMiddleCarPriceByCountry();
+  public async getMiddleCarPriceByCountry(dto: string): Promise<number> {
+    return await carInfoRepository.getMiddleCarPriceByCountry(dto);
   }
 }
 

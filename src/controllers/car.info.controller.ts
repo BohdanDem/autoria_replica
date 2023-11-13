@@ -36,7 +36,9 @@ class CarInfoController {
     next: NextFunction,
   ) {
     try {
-      const avgPrice = await carInfoService.getMiddleCarPriceByCountry();
+      const avgPrice = await carInfoService.getMiddleCarPriceByCountry(
+        req.body.currency,
+      );
 
       res.status(201).json(avgPrice);
     } catch (e) {
