@@ -8,6 +8,7 @@ class UserPresenter implements IPresenter<IUser, Partial<IUser>> {
       _id: data._id,
       userName: data.userName,
       role: data.role,
+      accountType: data.accountType,
       age: data.age,
       genders: data.genders,
       email: data.email,

@@ -6,7 +6,7 @@ class CarWatchRepository {
     return await CarWatch.create(dto);
   }
 
-  public async getCarWatch(id: string): Promise<any> {
+  public async getCarWatch(id: string): Promise<number> {
     // const queryStr = JSON.stringify(query);
     // const queryObj = JSON.parse(
     //   queryStr.replace(/\b(gte|lte|gt|lt)\b/, (match) => `$${match}`),

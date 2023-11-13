@@ -20,9 +20,7 @@ class CarInfoController {
     next: NextFunction,
   ) {
     try {
-      const avgPrice = await carInfoService.getMiddleCarPriceByRegion(
-        req.body.region,
-      );
+      const avgPrice = await carInfoService.getMiddleCarPriceByRegion(req.body);
 
       res.status(201).json(avgPrice);
     } catch (e) {
