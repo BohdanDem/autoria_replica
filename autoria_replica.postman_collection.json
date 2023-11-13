@@ -757,7 +757,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/car_info/watch/6551bbfb2796877833b44980",
+							"raw": "http://localhost:5000/car_info/watch/655256c1affedea970fcfcac",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -766,7 +766,7 @@
 							"path": [
 								"car_info",
 								"watch",
-								"6551bbfb2796877833b44980"
+								"655256c1affedea970fcfcac"
 							]
 						}
 					},
@@ -788,7 +788,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"region\": \"Lviv\"\r\n}",
+							"raw": "{\r\n    \"region\": \"Kherson\",\r\n    \"currency\": \"USD\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -826,7 +826,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "",
+							"raw": "{\r\n    \"currency\": \"UAH\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
