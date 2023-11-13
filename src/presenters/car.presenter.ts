@@ -6,6 +6,7 @@ class CarPresenter implements IPresenter<ICar, Partial<ICar>> {
   present(data: ICar): Partial<ICar> {
     return {
       _id: data._id,
+      brand: data.brand,
       carModel: data.carModel,
       year: data.year,
       price: data.price,
@@ -13,7 +14,6 @@ class CarPresenter implements IPresenter<ICar, Partial<ICar>> {
       region: data.region,
       isActive: data.isActive,
       carFullCost: data.carFullCost,
-      advertWatchCount: data.advertWatchCount,
       description: data.description,
       _userId: data._userId,
       avatar: `${configs.AWS_S3_URL}/${data.avatar}`,

@@ -6,9 +6,9 @@ export interface ICurrency {
 }
 
 export interface IPrice {
-  UAH_Price?: string;
-  EUR_Price?: string;
-  USD_Price?: string;
+  UAH_Price: string;
+  EUR_Price: string;
+  USD_Price: string;
 }
 
 export interface ICarFullCost {

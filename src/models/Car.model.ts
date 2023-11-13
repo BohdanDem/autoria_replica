@@ -39,9 +39,6 @@ const carSchema = new Schema(
     description: {
       type: String,
     },
-    advertWatchCount: {
-      type: Number,
-    },
     avatar: {
       type: String,
     },

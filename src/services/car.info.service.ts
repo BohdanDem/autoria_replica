@@ -1,9 +1,9 @@
 import { carInfoRepository } from "../repositories/car.info.repository";
+import { carWatchRepository } from "../repositories/car.watch.repository";
 
 class CarInfoService {
   public async getWatchCount(id: string): Promise<number> {
-    const car = await carInfoRepository.getCarWatch(id);
-    return car.advertWatchCount;
+    return await carWatchRepository.getCarWatch(id);
   }
 
   public async getMiddleCarPriceByRegion(dto: string): Promise<number> {

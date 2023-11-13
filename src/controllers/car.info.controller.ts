@@ -6,9 +6,9 @@ class CarInfoController {
   public async getWatchCount(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const advert = await carInfoService.getWatchCount(id);
+      const watch = await carInfoService.getWatchCount(id);
 
-      res.status(201).json(advert);
+      res.status(201).json(watch);
     } catch (e) {
       next(e);
     }

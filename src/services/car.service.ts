@@ -5,6 +5,7 @@ import { ECurrency } from "../enums/currency.enum";
 import { ApiError } from "../errors/api.error";
 import { Currency } from "../models/Currency.model";
 import { carRepository } from "../repositories/car.repository";
+import { carWatchRepository } from "../repositories/car.watch.repository";
 import { userRepository } from "../repositories/user.repository";
 import { ICar } from "../types/car.type";
 import { ICarFullCost, ICurrency, IPrice } from "../types/currency.type";
@@ -42,14 +43,17 @@ class CarService {
     }
     const carFullCost: ICarFullCost = await this.getFullCarCost(dto);
     dto.carFullCost = carFullCost;
-    dto.advertWatchCount = 0;
     return await carRepository.post(dto, userId);
   }
 
   public async getCar(carId: string): Promise<ICar> {
     const car = await carRepository.findById(carId);
-    car.advertWatchCount += 1;
-    await carRepository.put(car._id, car);
+    const carWatch = {
+      _carId: car._id,
+      brand: car.brand,
+      carModel: car.carModel,
+    };
+    await carWatchRepository.post(carWatch);
     return car;
   }
 
@@ -89,6 +93,7 @@ class CarService {
     switch (dto.currency) {
       case ECurrency.USD:
         cost.UAH_Price = (dto.price * +currency.USD_UAH_sale).toFixed(2);
+        cost.USD_Price = dto.price.toFixed(2);
         cost.EUR_Price = (
           dto.price *
           (+currency.USD_UAH_sale / +currency.EUR_UAH_sale)
@@ -100,8 +105,10 @@ class CarService {
           dto.price *
           (+currency.EUR_UAH_sale / +currency.USD_UAH_sale)
         ).toFixed(2);
+        cost.EUR_Price = dto.price.toFixed(2);
         break;
       case ECurrency.UAH:
+        cost.UAH_Price = dto.price.toFixed(2);
         cost.EUR_Price = (dto.price / +currency.EUR_UAH_sale).toFixed(2);
         cost.USD_Price = (dto.price / +currency.USD_UAH_sale).toFixed(2);
         break;
