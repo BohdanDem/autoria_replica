@@ -7,6 +7,7 @@ import { configs } from "./configs/config";
 import { cronRunner } from "./crons";
 import { ApiError } from "./errors/api.error";
 import { authRouter } from "./routers/auth.router";
+import { carInfoRouter } from "./routers/car.info.router";
 import { carRouter } from "./routers/car.router";
 import { infoRouter } from "./routers/info.router";
 import { userRouter } from "./routers/user.router";
@@ -22,6 +23,7 @@ app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/cars", carRouter);
 app.use("/info", infoRouter);
+app.use("/car_info", carInfoRouter);
 app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerJson));
 
 app.use((error: ApiError, req: Request, res: Response, next: NextFunction) => {

@@ -12,6 +12,7 @@ export interface ICar extends Document {
   region?: string;
   isActive?: boolean;
   carFullCost: object;
+  advertWatchCount?: number;
   description?: string;
   _userId?: string;
   avatar: string;

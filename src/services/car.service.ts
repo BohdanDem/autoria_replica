@@ -42,11 +42,15 @@ class CarService {
     }
     const carFullCost: ICarFullCost = await this.getFullCarCost(dto);
     dto.carFullCost = carFullCost;
+    dto.advertWatchCount = 0;
     return await carRepository.post(dto, userId);
   }
 
   public async getCar(carId: string): Promise<ICar> {
-    return await carRepository.findById(carId);
+    const car = await carRepository.findById(carId);
+    car.advertWatchCount += 1;
+    await carRepository.put(car._id, car);
+    return car;
   }
 
   public async delete(id: string): Promise<number> {
