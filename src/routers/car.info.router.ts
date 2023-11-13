@@ -4,6 +4,7 @@ import { roles } from "../configs/role";
 import { carInfoController } from "../controllers/car.info.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
+//import { QueryValidator } from "../validators/query.validator";
 
 const router = Router();
 
@@ -38,6 +39,7 @@ router.get(
     roles.SELLER,
   ),
   commonMiddleware.isIdValid("id"),
+  //commonMiddleware.isQueryValid(QueryValidator.queryCarWatch),
   carInfoController.getWatchCount,
 );
 
