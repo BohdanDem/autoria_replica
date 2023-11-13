@@ -13,6 +13,36 @@ class CarInfoController {
       next(e);
     }
   }
+
+  public async getMiddleCarPriceByRegion(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const avgPrice = await carInfoService.getMiddleCarPriceByRegion(
+        req.body.region,
+      );
+
+      res.status(201).json(avgPrice);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async getMiddleCarPriceByCountry(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const avgPrice = await carInfoService.getMiddleCarPriceByCountry();
+
+      res.status(201).json(avgPrice);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export const carInfoController = new CarInfoController();

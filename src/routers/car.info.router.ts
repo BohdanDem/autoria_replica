@@ -8,6 +8,28 @@ import { commonMiddleware } from "../middlewares/common.middleware";
 const router = Router();
 
 router.get(
+  "/middle_car_price_by_region",
+  authMiddleware.checkAccessToken,
+  authMiddleware.checkPermissionToManageByRole(
+    roles.ADMIN,
+    roles.MANAGER,
+    roles.SELLER,
+  ),
+  carInfoController.getMiddleCarPriceByRegion,
+);
+
+router.get(
+  "/middle_car_price_by_country",
+  authMiddleware.checkAccessToken,
+  authMiddleware.checkPermissionToManageByRole(
+    roles.ADMIN,
+    roles.MANAGER,
+    roles.SELLER,
+  ),
+  carInfoController.getMiddleCarPriceByCountry,
+);
+
+router.get(
   "/watch/:id",
   authMiddleware.checkAccessToken,
   authMiddleware.checkPermissionToManageByRole(

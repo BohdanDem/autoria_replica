@@ -15,5 +15,5 @@ export interface ICar extends Document {
   advertWatchCount?: number;
   description?: string;
   _userId?: string;
-  avatar: string;
+  avatar?: string;
 }
