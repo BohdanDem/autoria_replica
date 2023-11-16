@@ -2,10 +2,11 @@ import { carInfoRepository } from "../repositories/car.info.repository";
 import { carWatchRepository } from "../repositories/car.watch.repository";
 import { IAvgCarPrice } from "../types/car.info.type";
 import { ICarPrice } from "../types/car.watch.type";
+import { IQuery } from "../types/pagination.type";
 
 class CarInfoService {
-  public async getWatchCount(id: string): Promise<number> {
-    return await carWatchRepository.getCarWatch(id);
+  public async getWatchCount(id: string, query: IQuery): Promise<number> {
+    return await carWatchRepository.getCarWatch(id, query);
   }
 
   public async getMiddleCarPriceByRegion(

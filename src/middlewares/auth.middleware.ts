@@ -107,21 +107,29 @@ class AuthMiddleware {
     };
   }
 
-  public async checkAdminPermission(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) {
-    try {
-      const payload = req.res.locals.tokenPayload;
+  public checkAccessByAccountType(...allowedAccountType: string[]) {
+    return (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const payload = req.res.locals.tokenPayload;
 
-      if (payload.role !== "admin") {
-        throw new ApiError("You can't create manager account!", 403);
+        if (!(payload.role === "admin" || payload.role === "manager")) {
+          const allowedArray = [...allowedAccountType];
+          const permission = allowedArray
+            .map((item) => item === payload.accountType)
+            .find((item) => item === true);
+
+          if (!permission) {
+            throw new ApiError(
+              "Access denied! Please buy the premium account to get this info",
+              403,
+            );
+          }
+        }
+        next();
+      } catch (e) {
+        next(e);
       }
-      next();
-    } catch (e) {
-      next(e);
-    }
+    };
   }
 }
 

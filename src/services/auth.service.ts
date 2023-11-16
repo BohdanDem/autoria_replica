@@ -40,6 +40,8 @@ class AuthService {
       const user = await userRepository.getOneByParams({ email: dto.email }, [
         "password",
         "role",
+        "userName",
+        "accountType",
       ]);
       if (!user) {
         throw new ApiError("Invalid credentials provided", 401);
@@ -55,8 +57,9 @@ class AuthService {
 
       const tokensPair = await tokenService.generateTokenPair({
         userId: user._id.toString(),
-        name: user.userName,
+        userName: user.userName,
         role: user.role,
+        accountType: user.accountType,
       });
 
       await tokenRepository.create({
@@ -78,7 +81,8 @@ class AuthService {
       const tokensPair = tokenService.generateTokenPair({
         userId: payload.userId,
         role: payload.role,
-        name: payload.name,
+        userName: payload.userName,
+        accountType: payload.accountType,
       });
 
       await Promise.all([

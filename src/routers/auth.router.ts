@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import { roles } from "../configs/role";
 import { authController } from "../controllers/auth.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
@@ -18,7 +19,7 @@ router.post(
 router.post(
   "/register/manager",
   authMiddleware.checkAccessToken,
-  authMiddleware.checkAdminPermission,
+  authMiddleware.checkPermissionToManageByRole(roles.ADMIN),
   commonMiddleware.isBodyValid(UserValidator.register),
   userMiddleware.isEmailUniq,
   authController.register,
