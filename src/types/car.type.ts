@@ -11,6 +11,7 @@ export interface ICar extends Document {
   currency?: ECurrency;
   region?: string;
   isActive?: boolean;
+  badWordsCheckCount: number;
   carFullCost: object;
   description?: string;
   _userId?: string;

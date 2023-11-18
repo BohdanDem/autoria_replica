@@ -13,6 +13,7 @@ class CarPresenter implements IPresenter<ICar, Partial<ICar>> {
       currency: data.currency,
       region: data.region,
       isActive: data.isActive,
+      badWordsCheckCount: data.badWordsCheckCount,
       carFullCost: data.carFullCost,
       description: data.description,
       _userId: data._userId,

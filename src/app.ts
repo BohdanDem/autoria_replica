@@ -1,5 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import fileUpload from "express-fileupload";
+import flash from "express-flash";
+import session from "express-session";
 import * as mongoose from "mongoose";
 import * as swaggerUi from "swagger-ui-express";
 
@@ -16,6 +18,10 @@ import * as swaggerJson from "./utils/swagger.json";
 const app = express();
 
 app.use(express.json());
+app.use(
+  session({ secret: "your-secret-key", resave: true, saveUninitialized: true }),
+);
+app.use(flash());
 app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
 

@@ -31,8 +31,9 @@ class CarController {
       const { userId } = req.res.locals.tokenPayload as ITokenPayload;
 
       const createdCar = await carService.post(req.body, userId);
+      const warning = res.locals.warning;
 
-      res.status(201).json(createdCar);
+      res.status(201).json({ warning, createdCar });
     } catch (e) {
       next(e);
     }
@@ -70,8 +71,9 @@ class CarController {
       const { id } = req.params;
 
       const car = await carService.put(id, req.body);
+      const warning = res.locals.warning;
 
-      res.status(201).json(car);
+      res.status(201).json({ warning, car });
     } catch (e) {
       next(e);
     }

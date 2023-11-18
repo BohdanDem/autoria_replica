@@ -14,7 +14,7 @@ const router = Router();
 router.get(
   "/",
   authMiddleware.checkAccessToken,
-  commonMiddleware.isQueryValid(QueryValidator.query),
+  commonMiddleware.isQueryValid(QueryValidator.queryCarWatch),
   carController.getAll,
 );
 
@@ -27,6 +27,7 @@ router.post(
     roles.SELLER,
   ),
   commonMiddleware.isBodyValid(CarValidator.create),
+  commonMiddleware.checkCarPostBadWords,
   carController.post,
 );
 
@@ -59,7 +60,9 @@ router.put(
     roles.MANAGER,
   ),
   commonMiddleware.isIdValid("id"),
+  carMiddleware.getByIdOrThrow,
   commonMiddleware.isBodyValid(CarValidator.update),
+  commonMiddleware.checkCarUpdateBadWords,
   carController.put,
 );
 

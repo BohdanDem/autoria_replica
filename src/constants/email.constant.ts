@@ -5,4 +5,8 @@ export const templates = {
     templateName: "add.car.brand",
     subject: "Car brand is missed on autoria_replica platform",
   },
+  [EEmailAction.BlockADVERT]: {
+    templateName: "advert.censorship",
+    subject: "Not censorship content advert",
+  },
 };
